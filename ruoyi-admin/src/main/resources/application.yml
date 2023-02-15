@@ -89,7 +89,46 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
-
+  # rabbitmq消息队列配置
+  rabbitmq:
+    username: guest
+    password: guest
+    port: 5672
+    addresses:
+    #开启发送失败返回
+    publisher-returns: true
+    #配置确认回调
+    publisher-confirm-type: correlated
+    listener:
+      simple:
+        #指定最小的消费者数量.
+        concurrency: 5
+        #指定最大的消费者数量.
+        max-concurrency: 10
+        #开启ack
+        acknowledge-mode: auto
+        # 最多一次消费多少条数据 -限流
+        prefetch: 100
+      #开启ack
+      direct:
+        acknowledge-mode: auto
+    #支持消息的确认与返回
+    template:
+      mandatory: true
+  mail:
+    # 配置 smtp 服务器地址
+    host: smtp.163.com
+    username: dengpwork@163.com
+    password: NPJCVPJHHCICUPNK
+    from: dengpwork@163.com
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 # token配置
 token:
     # 令牌自定义标识
@@ -129,3 +168,4 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+

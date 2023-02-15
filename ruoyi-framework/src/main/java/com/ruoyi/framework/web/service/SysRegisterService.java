@@ -1,5 +1,7 @@
 package com.ruoyi.framework.web.service;
 
+import com.ruoyi.common.domain.Mail;
+import com.ruoyi.system.service.IProduceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.constant.CacheConstants;
@@ -34,6 +36,9 @@ public class SysRegisterService
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private IProduceService produceService;
 
     /**
      * 注册
@@ -84,6 +89,11 @@ public class SysRegisterService
             }
             else
             {
+                Mail mail = new Mail();
+                mail.setTo("1092518267@qq.com");
+                mail.setContent("注册账号");
+                mail.setTitle("注册系统");
+                produceService.send(mail);
                 AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.message("user.register.success")));
             }
         }
